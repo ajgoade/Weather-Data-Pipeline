@@ -46,43 +46,6 @@ def download_task():
     logging.info("All objects for year %s retrieved from %s and saved to %s local directory", YEAR, f"isd-lite/data/{YEAR}/", f"/mnt/shared/weather/data/raw/{YEAR}/")
 
 
-def ingest(db):
-    """
-    Ingest the content of the raw-text based files into a "temporary" table before upserting it to the real table
-    """
-    cursor = db.cursor()
-    logging.info("Cursor created.")
-
-    with db:
-        cursor.execute(
-            """
-            CREATE TABLE IF NOT EXISTS tmp_weather(
-                station_id varchar(14) not null,
-                year integer,
-                month integer,
-                day integer,
-                hour integer,
-                air_temperature integer, 
-                dew_point integer, 
-                sea_lvl_pressure integer, 
-                wind_direction integer, 
-                wind_speed integer, 
-                sky_condition integer, 
-                one_hour_precipitation integer, 
-                six_hour_precipitation integer
-            );
-        """        
-        )
-        logging.info("Temporary table tmp_weather created")
-    # Copy all .txt files into temp table
-    for filename in glob.glob(f'{RAW_FILES_DIRECTORY}/{YEAR}/*.txt'):
-        if TODAY in filename:            
-            with open(filename, 'r') as f:
-                logging.info("Now ingesting %s file (%s MB) into `tmp_weather`", filename, round(os.stat(filename).st_size / 1024 / 1024, 2))
-                cursor.copy_from(f, "tmp_weather", sep = ' ', null='-9999')
-#                CONN.commit()
-
-
 def upsert(db):
     """
     Upsert the summarized content of `tmp_weather` table into `weather` table.
