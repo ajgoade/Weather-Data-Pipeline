@@ -9,7 +9,7 @@ from modules import noaa_isd
 import logging
 from datetime import timedelta, datetime
 import glob
-import psycopg2
+#import psycopg2
 import os
 
 # Global variables
@@ -221,7 +221,7 @@ with local_workflow:
         echo "Concatenation finished"     
 
         rm file_list*
-        find {RAW_FILES_DIRECTORY}/{YEAR} -type f -name "*.gz" -delete
+        find {RAW_FILES_DIRECTORY}/{YEAR} -type f -not -name "*.txt" -delete
 
         echo "Original raw files deleted"        
         """
