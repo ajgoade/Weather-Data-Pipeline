@@ -16,7 +16,8 @@ from botocore.exceptions import ClientError
 from botocore.handlers import disable_signing
 
 # Airflow directory
-airflow_dir = os.environ.get("AIRFLOW_HOME", "/opt/airflow")
+#airflow_dir = os.environ.get("AIRFLOW_HOME", "/opt/airflow")
+airflow_dir = "/mnt/shared/weather"
 
 # BOTO3 Resources
 S3 = boto3.resource("s3", config = Config(max_pool_connections=50,))
