@@ -226,22 +226,22 @@ with local_workflow:
     )
 
     # Ingest the content of the .txt files into "temporary" table `tmp_weather`
-    task5 = PythonOperator(
-        task_id = "IngestData",
-        python_callable = ingest,
+    #task5 = PythonOperator(
+    #    task_id = "IngestData",
+    #    python_callable = ingest,
      #   op_kwargs={
     #        "db": CONN
      #   }
-    )
+    #)
 
     # Upsert the summarized content of `tmp_weather` into `weather` table
-    task6 = PythonOperator(
-        task_id = "UpsertData",
-        python_callable = upsert,
+    #task6 = PythonOperator(
+    #    task_id = "UpsertData",
+    #    python_callable = upsert,
     #    op_kwargs={
      #       "db": CONN
      #   }
-    )
+    #)
 
     #task1 >> task2 >> task3 >> task4 >> task5 >> task6
     task1 >> task2 >> task3 >> task4
