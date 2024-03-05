@@ -110,10 +110,10 @@ with local_workflow:
         """
     )
 
-    task5 = HiveOperator(
-        taks_id = 'create_table',
-        hive_cli_conn_id='hs2_df',
-        hql='CREATE TABLE IF NOT EXISTS tmp_weather(station_id varchar(14) not null,year integer,month integer,day integer,hour integer,air_temperature integer, dew_point integer, sea_lvl_pressure integer, wind_direction integer, wind_speed integer, sky_condition integer, one_hour_precipitation integer, six_hour_precipitation integer);',
-    )
+    #task5 = HiveOperator(
+    #    taks_id = 'create_table',
+    #    hive_cli_conn_id='hs2_df',
+    #    hql='CREATE TABLE IF NOT EXISTS tmp_weather(station_id varchar(14) not null,year integer,month integer,day integer,hour integer,air_temperature integer, dew_point integer, sea_lvl_pressure integer, wind_direction integer, wind_speed integer, sky_condition integer, one_hour_precipitation integer, six_hour_precipitation integer);',
+    #)
 
-    task1 >> task2 >> task3 >> task4 >> task5
+    task1 >> task2 >> task3 >> task4
