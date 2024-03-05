@@ -15,8 +15,10 @@ import os
 # Global variables
 YEAR = datetime.now().strftime("%Y")
 TODAY = datetime.now().strftime("%Y-%m-%d")
-CLEAN_CSV_DIRECTORY = f"//mnt/user/{noaa_isd.airflow_dir}/data/clean" 
-RAW_FILES_DIRECTORY = f"//mnt/user/{noaa_isd.airflow_dir}/data/raw"
+#CLEAN_CSV_DIRECTORY = f"{noaa_isd.airflow_dir}/data/clean" 
+#RAW_FILES_DIRECTORY = f"{noaa_isd.airflow_dir}/data/raw"
+CLEAN_CSV_DIRECTORY = f"/mnt/shared/weather/data/clean" 
+RAW_FILES_DIRECTORY = f"/mnt/shared/weather/data/raw"
 #CONN = psycopg2.connect(**{
 #    "host": "postgres",        
 #    "user": os.environ['POSTGRES_USER'],
