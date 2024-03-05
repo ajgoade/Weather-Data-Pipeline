@@ -2,6 +2,7 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
+from airflow.providers.apache.hive.operators.hive import HiveOperator
 from airflow.utils.dates import days_ago
 
 # External modules
@@ -42,7 +43,7 @@ def download_task():
    
     # Download all the objects through multi-threading
     noaa_isd.download_multiple(object_keys)    
-    logging.info("All objects for year %s retrieved from %s and saved to %s local directory", YEAR, f"isd-lite/data/{YEAR}/", f"~/data/raw/{YEAR}/")
+    logging.info("All objects for year %s retrieved from %s and saved to %s local directory", YEAR, f"isd-lite/data/{YEAR}/", f"/mnt/shared/weather/data/raw/{YEAR}/")
 
 
 def ingest(db):
@@ -227,6 +228,12 @@ with local_workflow:
         """
     )
 
+    task5 = HiveOperator(
+        taks_id = 'create_table',
+        hive_cli_conn_id='hs2_df',
+        hql='CREATE TABLE IF NOT EXISTS tmp_weather(station_id varchar(14) not null,year integer,month integer,day integer,hour integer,air_temperature integer, dew_point integer, sea_lvl_pressure integer, wind_direction integer, wind_speed integer, sky_condition integer, one_hour_precipitation integer, six_hour_precipitation integer);',
+    )
+
     # Ingest the content of the .txt files into "temporary" table `tmp_weather`
     #task5 = PythonOperator(
     #    task_id = "IngestData",
@@ -246,4 +253,4 @@ with local_workflow:
     #)
 
     #task1 >> task2 >> task3 >> task4 >> task5 >> task6
-    task1 >> task2 >> task3 >> task4
+    task1 >> task2 >> task3 >> task4 >> task5
