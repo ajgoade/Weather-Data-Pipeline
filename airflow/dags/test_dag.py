@@ -10,22 +10,13 @@ from modules import noaa_isd
 import logging
 from datetime import timedelta, datetime
 import glob
-#import psycopg2
 import os
 
 # Global variables
 YEAR = datetime.now().strftime("%Y")
 TODAY = datetime.now().strftime("%Y-%m-%d")
-#CLEAN_CSV_DIRECTORY = f"{noaa_isd.airflow_dir}/data/clean" 
-#RAW_FILES_DIRECTORY = f"{noaa_isd.airflow_dir}/data/raw"
 CLEAN_CSV_DIRECTORY = f"/mnt/shared/weather/data/clean" 
 RAW_FILES_DIRECTORY = f"/mnt/shared/weather/data/raw"
-#CONN = psycopg2.connect(**{
-#    "host": "postgres",        
-#    "user": os.environ['POSTGRES_USER'],
-#    "password": os.environ['POSTGRES_PASSWORD'],
-#    "database": os.environ['POSTGRES_DB']
-#})
 
 
 def download_task():    
@@ -44,78 +35,6 @@ def download_task():
     # Download all the objects through multi-threading
     noaa_isd.download_multiple(object_keys)    
     logging.info("All objects for year %s retrieved from %s and saved to %s local directory", YEAR, f"isd-lite/data/{YEAR}/", f"/mnt/shared/weather/data/raw/{YEAR}/")
-
-
-#def upsert(db):
-#    """
-#    Upsert the summarized content of `tmp_weather` table into `weather` table.
-#    """
-#    cursor = db.cursor()
-#    with db:
-#        # Modify and upsert to real table
-#        logging.info("Summarizing the content of `tmp_weather`")
-#        cursor.execute(
-#            """
-#            INSERT INTO weather
-#            SELECT 
-#                station_id, 
-#                make_date(year, month,day) as date, 
-#                count(hour) as n_records,
-#                avg(air_temperature) as air_temperature_avg, 
-#                min(air_temperature) as air_temperature_min, 
-#                max(air_temperature) as air_temperature_max,
-#                avg(dew_point) as dew_point_avg, 
-#                min(dew_point) as dew_point_min, 
-#                max(dew_point) as dew_point_max,
-#                avg(sea_lvl_pressure) as sea_lvl_pressure_avg, 
-#                min(sea_lvl_pressure) as sea_lvl_pressure_min, 
-#                max(sea_lvl_pressure) as sea_lvl_pressure_max,
-#                avg(wind_direction) as wind_direction,
-#                avg(wind_speed) as wind_speed_avg, 
-#                min(wind_speed) as wind_speed_min, 
-#                max(wind_speed) as wind_speed_max,
-#                round(avg(sky_condition)) as sky_condition, 
-#                avg(one_hour_precipitation) as one_hour_precipitation_avg,
-#                min(one_hour_precipitation) as one_hour_precipitation_min, 
-###                max(one_hour_precipitation) as one_hour_precipitation_max,
-#                avg(six_hour_precipitation) as six_hour_precipitation_avg, 
-#                min(six_hour_precipitation) as six_hour_precipitation_min, 
-#                max(six_hour_precipitation) as six_hour_precipitation_max
-#            FROM tmp_weather GROUP BY station_id, make_date(year, month,day) HAVING count(hour) > 3
-#                ON CONFLICT (station_id, date)
-#            DO UPDATE SET
-#                n_records = EXCLUDED.n_records,
-#                air_temperature_avg = EXCLUDED.air_temperature_avg,
-#                air_temperature_min = EXCLUDED.air_temperature_min,
-#                air_temperature_max = EXCLUDED.air_temperature_max,
-#                dew_point_avg = EXCLUDED.dew_point_avg,
-#                dew_point_min = EXCLUDED.dew_point_min,
-#                dew_point_max = EXCLUDED.dew_point_max,
-#                sea_lvl_pressure_avg = EXCLUDED.sea_lvl_pressure_avg,
-#                sea_lvl_pressure_min = EXCLUDED.sea_lvl_pressure_min,
-#                sea_lvl_pressure_max = EXCLUDED.sea_lvl_pressure_max,
-#                wind_direction = EXCLUDED.wind_direction,
-#                wind_speed_avg = EXCLUDED.wind_speed_avg,
-#                wind_speed_min = EXCLUDED.wind_speed_min,
-#                wind_speed_max = EXCLUDED.wind_speed_max,
-#                sky_condition = EXCLUDED.sky_condition,
-#                one_hour_precipitation_avg = EXCLUDED.one_hour_precipitation_avg,
-#                one_hour_precipitation_min = EXCLUDED.one_hour_precipitation_min,
-#                one_hour_precipitation_max = EXCLUDED.one_hour_precipitation_max,
-#                six_hour_precipitation_avg = EXCLUDED.six_hour_precipitation_avg,
-#                six_hour_precipitation_min = EXCLUDED.six_hour_precipitation_min,
-#                six_hour_precipitation_max = EXCLUDED.six_hour_precipitation_max;            
-#            """
-#        )
-#        logging.info("Aggregated data upserted")
-# #       CONN.commit()
-
-        # Drop temp table
- #       cursor.execute('DROP TABLE IF EXISTS tmp_weather;')
- #       CONN.commit()
- #       logging.info("`tmp_weather` table deleted")        
-
-    
 
 ################# DAG #################
 
@@ -197,23 +116,4 @@ with local_workflow:
         hql='CREATE TABLE IF NOT EXISTS tmp_weather(station_id varchar(14) not null,year integer,month integer,day integer,hour integer,air_temperature integer, dew_point integer, sea_lvl_pressure integer, wind_direction integer, wind_speed integer, sky_condition integer, one_hour_precipitation integer, six_hour_precipitation integer);',
     )
 
-    # Ingest the content of the .txt files into "temporary" table `tmp_weather`
-    #task5 = PythonOperator(
-    #    task_id = "IngestData",
-    #    python_callable = ingest,
-     #   op_kwargs={
-    #        "db": CONN
-     #   }
-    #)
-
-    # Upsert the summarized content of `tmp_weather` into `weather` table
-    #task6 = PythonOperator(
-    #    task_id = "UpsertData",
-    #    python_callable = upsert,
-    #    op_kwargs={
-     #       "db": CONN
-     #   }
-    #)
-
-    #task1 >> task2 >> task3 >> task4 >> task5 >> task6
     task1 >> task2 >> task3 >> task4 >> task5
