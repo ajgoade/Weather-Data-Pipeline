@@ -17,12 +17,12 @@ YEAR = datetime.now().strftime("%Y")
 TODAY = datetime.now().strftime("%Y-%m-%d")
 CLEAN_CSV_DIRECTORY = f"//mnt/user/{noaa_isd.airflow_dir}/data/clean" 
 RAW_FILES_DIRECTORY = f"//mnt/user/{noaa_isd.airflow_dir}/data/raw"
-CONN = psycopg2.connect(**{
-    "host": "postgres",        
-    "user": os.environ['POSTGRES_USER'],
-    "password": os.environ['POSTGRES_PASSWORD'],
-    "database": os.environ['POSTGRES_DB']
-})
+#CONN = psycopg2.connect(**{
+#    "host": "postgres",        
+#    "user": os.environ['POSTGRES_USER'],
+#    "password": os.environ['POSTGRES_PASSWORD'],
+#    "database": os.environ['POSTGRES_DB']
+#})
 
 
 def download_task():    
