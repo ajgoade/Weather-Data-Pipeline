@@ -77,7 +77,7 @@ def ingest(db):
             with open(filename, 'r') as f:
                 logging.info("Now ingesting %s file (%s MB) into `tmp_weather`", filename, round(os.stat(filename).st_size / 1024 / 1024, 2))
                 cursor.copy_from(f, "tmp_weather", sep = ' ', null='-9999')
-                CONN.commit()
+#                CONN.commit()
 
 
 def upsert(db):
@@ -142,11 +142,11 @@ def upsert(db):
             """
         )
         logging.info("Aggregated data upserted")
-        CONN.commit()
+ #       CONN.commit()
 
         # Drop temp table
         cursor.execute('DROP TABLE IF EXISTS tmp_weather;')
-        CONN.commit()
+ #       CONN.commit()
         logging.info("`tmp_weather` table deleted")        
 
     
@@ -229,19 +229,19 @@ with local_workflow:
     task5 = PythonOperator(
         task_id = "IngestData",
         python_callable = ingest,
-        op_kwargs={
-            "db": CONN
-        }
+     #   op_kwargs={
+    #        "db": CONN
+     #   }
     )
 
     # Upsert the summarized content of `tmp_weather` into `weather` table
     task6 = PythonOperator(
         task_id = "UpsertData",
         python_callable = upsert,
-        op_kwargs={
-            "db": CONN
-        }
+    #    op_kwargs={
+     #       "db": CONN
+     #   }
     )
 
     #task1 >> task2 >> task3 >> task4 >> task5 >> task6
-    task1
+    task1 >> task2 >> task3 >> task4
