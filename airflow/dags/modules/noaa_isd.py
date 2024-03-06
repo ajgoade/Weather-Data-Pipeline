@@ -22,7 +22,7 @@ airflow_dir = "/mnt/shared/weather"
 # BOTO3 Resources
 S3 = boto3.resource("s3", config = Config(max_pool_connections=50,))
 S3.meta.client.meta.events.register('choose-signer.s3.*', disable_signing)
-PUBLIC_BUCKET = S3.Bucket("noaa-isd-pds")
+PUBLIC_BUCKET = S3.Bucket("noaa-global-hourly-pds")
 
 def list_object_keys(prefix, bucket = PUBLIC_BUCKET):
     """
