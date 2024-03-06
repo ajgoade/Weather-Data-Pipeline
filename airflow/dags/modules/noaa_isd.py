@@ -152,4 +152,5 @@ def download_multiple(list_of_files):
     """
     logging.info("Generator for list of objects to download now set. Starting download with multi-threading.")
     with concurrent.futures.ThreadPoolExecutor() as execturor:
+        logging.info("Actually Executing")
         execturor.map(_download_file, list_of_files)        
