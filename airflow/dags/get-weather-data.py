@@ -24,7 +24,7 @@ def download_task():
     Download the objects modified within the last 24 hours inside an S3 bucket folder of current year.    
     """
     # Get the list of objects to download
-    list_of_objects = noaa_isd.list_object_keys(f"isd-lite/data/{YEAR}/")    
+    list_of_objects = noaa_isd.list_object_keys(f"{YEAR}/")    
     object_keys = (obj.key for obj in noaa_isd.get_daily_list(list_of_objects))
 
     # Folder to save the raw files. Create it if it does not exist        
