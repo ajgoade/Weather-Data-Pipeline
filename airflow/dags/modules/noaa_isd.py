@@ -116,8 +116,10 @@ def _download_file(object_key, bucket = PUBLIC_BUCKET):
     
     logging.info("Download starting")
     # Set directory and local name of file to be downloaded    
-    year, local_name = object_key.split("/")[2:]        
+    year, local_name = object_key.split("/")[2:]
+    logging.info("1")        
     directory = f"{airflow_dir}/data/raw/{year}"
+    logging.info("2")
     filename = f"{directory}/{local_name}"
     logging.info("DOWNLOAD: %s / %s ", directory, filename)
     logging.info("local_name %s", f"{local_name}")
