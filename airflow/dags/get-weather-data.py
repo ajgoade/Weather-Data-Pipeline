@@ -25,7 +25,6 @@ def download_task():
     """
     # Get the list of objects to download
     list_of_objects = noaa_isd.list_object_keys(f"{YEAR}/")
-    logging.info("objects %s", list_of_objects)
     object_keys = (obj.key for obj in noaa_isd.get_daily_list(list_of_objects))
 
     # Folder to save the raw files. Create it if it does not exist        
