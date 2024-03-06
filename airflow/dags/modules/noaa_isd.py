@@ -118,6 +118,7 @@ def _download_file(object_key, bucket = PUBLIC_BUCKET):
     year, local_name = object_key.split("/")[2:]        
     directory = f"{airflow_dir}/data/raw/{year}"
     filename = f"{directory}/{local_name}"
+    logging.info("DOWNLOAD: %s year %s file", year, local_name)
 
     # Download s3 object 
     try:
