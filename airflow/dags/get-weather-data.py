@@ -34,7 +34,7 @@ def download_task():
    
     # Download all the objects through multi-threading
     noaa_isd.download_multiple(object_keys)    
-    logging.info("All objects for year %s retrieved from %s and saved to %s local directory", YEAR, f"isd-lite/data/{YEAR}/", f"/mnt/shared/weather/data/raw/{YEAR}/")
+    logging.info("All objects for year %s retrieved from %s and saved to %s local directory", YEAR, f"{YEAR}/", f"/mnt/shared/weather/data/raw/{YEAR}/")
 
 ################# DAG #################
 
