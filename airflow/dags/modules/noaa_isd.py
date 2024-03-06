@@ -74,7 +74,7 @@ def get_daily_list(folder_objects):
         # Check if the object's last modified date is more than 24 hours ago
         yesterday = datetime.now() - timedelta(hours=24)
         if yesterday < obj.last_modified.replace(tzinfo=None):
-            logging.info("Object %s added", obj.key)            
+            #logging.info("Object %s added", obj.key)            
             modified_objects += 1
             yield obj
     if 'index' in locals():
@@ -119,7 +119,7 @@ def _download_file(object_key, bucket = PUBLIC_BUCKET):
     logging.info("Download starting %s", object_key.key)
     year, local_name = object_key.split("/")[2:]
     logging.info("Year %s local_name %s", year, local_name)
-    directory = f"{airflow_dir}/data/raw/{year}"
+    directory = f"/mnt/shared/weather/data/raw/{year}"
     filename = f"{directory}/{local_name}"
 
     # Download s3 object 
