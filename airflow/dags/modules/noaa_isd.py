@@ -70,8 +70,7 @@ def get_daily_list(folder_objects):
         Objects modified within the last 24 hours
     """
     modified_objects = 0
-    for index, obj in enumerate(folder_objects):
-        print(obj.key)        
+    for index, obj in enumerate(folder_objects):     
         # Check if the object's last modified date is more than 24 hours ago
         yesterday = datetime.now() - timedelta(hours=24)
         if yesterday < obj.last_modified.replace(tzinfo=None):            
