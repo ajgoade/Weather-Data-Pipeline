@@ -24,7 +24,8 @@ def download_task():
     Download the objects modified within the last 24 hours inside an S3 bucket folder of current year.    
     """
     # Get the list of objects to download
-    list_of_objects = noaa_isd.list_object_keys(f"{YEAR}/")    
+    list_of_objects = noaa_isd.list_object_keys(f"{YEAR}/")
+    logging.info("objects %s", list_of_objects)    
     object_keys = (obj.key for obj in noaa_isd.get_daily_list(list_of_objects))
 
     # Folder to save the raw files. Create it if it does not exist        
@@ -33,6 +34,7 @@ def download_task():
         os.makedirs(f"{CLEAN_CSV_DIRECTORY}/{YEAR}")
    
     # Download all the objects through multi-threading
+    logging.info("Starting Download")
     noaa_isd.download_multiple(object_keys)    
     logging.info("All objects for year %s retrieved from %s and saved to %s local directory", YEAR, f"{YEAR}/", f"/mnt/shared/weather/data/raw/{YEAR}/")
 
