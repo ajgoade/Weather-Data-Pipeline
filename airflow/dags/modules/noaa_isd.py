@@ -74,7 +74,7 @@ def get_daily_list(folder_objects):
         # Check if the object's last modified date is more than 24 hours ago
         yesterday = datetime.now() - timedelta(hours=24)
         if yesterday < obj.last_modified.replace(tzinfo=None):
-            logging.info("Object %s added" obj.key)            
+            logging.info("Object %s added", obj.key)            
             modified_objects += 1
             yield obj
     if 'index' in locals():
