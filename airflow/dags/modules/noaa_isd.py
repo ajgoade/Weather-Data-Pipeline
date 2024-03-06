@@ -114,18 +114,16 @@ def _download_file(object_key, bucket = PUBLIC_BUCKET):
     >>> # file saved in /opt/airflow/data/raw/010010-99999-2022.gz
     """ 
     
-    logging.info("Download starting")
     # Set directory and local name of file to be downloaded    
     #year, local_name = object_key.split("/")[2:]
-    logging.info("1")        
-    directory = f"{airflow_dir}/data/raw/{year}"
-    logging.info("2")
-    filename = f"{directory}/{local_name}"
-    logging.info("DOWNLOAD: %s / %s ", directory, filename)
-    logging.info("local_name %s", f"{local_name}")
+    #directory = f"{airflow_dir}/data/raw/{year}"
+    #filename = f"{directory}/{local_name}"
+    #logging.info("DOWNLOAD: %s / %s ", directory, filename)
+    #logging.info("local_name %s", f"{local_name}")
 
     # Download s3 object 
     try:
+        logging.info("Download starting")
         bucket.download_file(object_key, filename)
     except ClientError as ce:
         logging.error("ERROR: %s", ce)
