@@ -114,6 +114,7 @@ def _download_file(object_key, bucket = PUBLIC_BUCKET):
     >>> # file saved in /opt/airflow/data/raw/010010-99999-2022.gz
     """ 
     
+    logging.info("Download starting")
     # Set directory and local name of file to be downloaded    
     year, local_name = object_key.split("/")[2:]        
     directory = f"{airflow_dir}/data/raw/{year}"
