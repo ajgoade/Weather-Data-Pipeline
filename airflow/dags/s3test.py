@@ -33,7 +33,7 @@ def s3_upload():
         s3_hook.load_file(
             filename=file,
             key=file,
-            bucket='isd-weather',
+            bucket_name='isd-weather',
             replace=True
         )
 
