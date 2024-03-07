@@ -29,6 +29,13 @@ def s3_upload():
     files = os.listdir(f"{RAW_FILES_DIRECTORY}/{YEAR}")
     #files = s3_hook.list_keys(bucket_name='isd-weather')
     print("BUCKET:  {}".format(files))
+    for file in files:
+        s3_hook.load_file(
+            filename=file,
+            key=file,
+            bucket='isd-weather',
+            replace=True
+        )
 
     #objects = s3_client.list_objects_v2(Bucket="isd-weather")
 #
