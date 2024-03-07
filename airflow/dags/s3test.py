@@ -34,7 +34,7 @@ def s3_upload():
     for file in new_files:
         s3_hook.load_file(
             filename=file,
-            key=file.rsplit('/', 1)[-1],
+            key=file.rsplit('/', 1)[-2],
             bucket='isd-weather',
             replace=True
         )
