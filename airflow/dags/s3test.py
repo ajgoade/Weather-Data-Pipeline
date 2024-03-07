@@ -17,11 +17,11 @@ from botocore.handlers import disable_signing
 
 def s3_upload():
     s3_hook = S3Hook(aws_conn_id='aws_sedev1_df')
-    s3_conn = s3_hook.get_conn()
+    s3_hook.get_conn()
     #s3_client = s3_conn.client('s3')
     #This example uses the boto3 client
     #Client Example
-    files = s3_conn.list_prefixes(bucket_name='isd-weather')
+    files = s3_hook.list_prefixes(bucket_name='isd-weather')
     print("BUCKET:  {}".format(files))
 
     #objects = s3_client.list_objects_v2(Bucket="isd-weather")
