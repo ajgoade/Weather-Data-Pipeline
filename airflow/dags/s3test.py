@@ -21,7 +21,7 @@ def s3_upload():
     #s3_client = s3_conn.client('s3')
     #This example uses the boto3 client
     #Client Example
-    files = s3_hook.list_prefixes(bucket_name='isd-weather')
+    files = s3_hook.list_keys(bucket_name='isd-weather')
     print("BUCKET:  {}".format(files))
 
     #objects = s3_client.list_objects_v2(Bucket="isd-weather")
