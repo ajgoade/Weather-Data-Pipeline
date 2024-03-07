@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
+from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 
 import os
 import logging
@@ -15,10 +16,8 @@ from botocore.exceptions import ClientError
 from botocore.handlers import disable_signing
 
 def s3_upload():
-    session = boto3.Session(profile_name='aws_sedev1_df')
-    s3_client = session.client('s3',
-                    endpoint_url='https://10.0.1.42:9000',
-                    verify=False)
+    session = S3Hook("aws_sedev1_df")
+    s3_client = session.client('s3')
     #This example uses the boto3 client
     #Client Example
 
