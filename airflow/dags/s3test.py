@@ -17,7 +17,8 @@ from botocore.handlers import disable_signing
 
 def s3_upload():
     s3_hook = S3Hook(aws_conn_id='aws_sedev1_df')
-    s3_client = s3_hook.get_conn()
+    #s3_client = s3_hook.get_conn()
+    s3_client = s3_hook.client('s3')
     #This example uses the boto3 client
     #Client Example
 
