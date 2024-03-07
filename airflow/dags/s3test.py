@@ -30,12 +30,12 @@ def s3_upload():
     string = f"{RAW_FILES_DIRECTORY}/{YEAR}/"
     new_files = [string + x for x in files]
     #files = s3_hook.list_keys(bucket_name='isd-weather')
-    print("BUCKET:  {}".format(new_files))
+    #print("BUCKET:  {}".format(new_files))
     for file in new_files:
         s3_hook.load_file(
             filename=file,
-            key=file,
-            bucket_name='isd-weather',
+            key=file.rsplit('/', 1)[-1],
+            bucket='isd-weather',
             replace=True
         )
 
@@ -46,7 +46,7 @@ def s3_upload():
     
 
 with DAG(
-    dag_id='s3cli_test_dag',
+    dag_id='fail_example',
     start_date=days_ago(1),
     schedule_interval="@daily"
 ) as dag:

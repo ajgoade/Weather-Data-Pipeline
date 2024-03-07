@@ -2,7 +2,7 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
-from airflow.providers.apache.hive.operators.hive import HiveOperator
+from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 from airflow.utils.dates import days_ago
 
 # External modules
@@ -37,6 +37,21 @@ def download_task():
     noaa_isd.download_multiple(object_keys)    
     logging.info("All objects for year %s retrieved from %s and saved to %s local directory", YEAR, f"{YEAR}/", f"/mnt/shared/weather/data/raw/{YEAR}/")
 
+
+def s3_upload():
+    s3_hook = S3Hook(aws_conn_id='aws_sedev1_df')
+    s3_hook.get_conn()
+    files = os.listdir(f"{RAW_FILES_DIRECTORY}/{YEAR}")
+    string = f"{RAW_FILES_DIRECTORY}/{YEAR}/"
+    new_files = [string + x for x in files]
+    for file in new_files:
+        s3_hook.load_file(
+            filename=file,
+            key=file.rsplit('/', 1)[-1],
+            bucket_name='isd-weather',
+            replace=True
+        )
+
 ################# DAG #################
 
 # DAG configuration
@@ -48,13 +63,16 @@ local_workflow = DAG(
     catchup=False
 )
 
-
 with local_workflow:  
     # Download the objects from the S3 Bucket
     task1 = PythonOperator(
         task_id = "DownloadData",
         python_callable = download_task
     )
+    task2 = PythonOperator(
+        task_id='UploadData',
+        python_callable=s3_upload
+    )
 
 
-    task1
+    task1 >> task2
