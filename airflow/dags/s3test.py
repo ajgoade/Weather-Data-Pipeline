@@ -16,8 +16,7 @@ from botocore.exceptions import ClientError
 from botocore.handlers import disable_signing
 
 def s3_upload():
-    session = S3Hook("aws_sedev1_df")
-    s3_client = session.client('s3')
+    s3_client = S3Hook(aws_sedev1_df)
     #This example uses the boto3 client
     #Client Example
 
