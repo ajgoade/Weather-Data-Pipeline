@@ -15,13 +15,19 @@ from botocore.config import Config
 from botocore.exceptions import ClientError
 from botocore.handlers import disable_signing
 
+YEAR = datetime.now().strftime("%Y")
+TODAY = datetime.now().strftime("%Y-%m-%d")
+CLEAN_CSV_DIRECTORY = f"/mnt/shared/weather/data/clean" 
+RAW_FILES_DIRECTORY = f"/mnt/shared/weather/data/raw"
+
 def s3_upload():
     s3_hook = S3Hook(aws_conn_id='aws_sedev1_df')
     s3_hook.get_conn()
     #s3_client = s3_conn.client('s3')
     #This example uses the boto3 client
     #Client Example
-    files = s3_hook.list_keys(bucket_name='isd-weather')
+    files = os.listdir(f"{RAW_FILES_DIRECTORY}/{YEAR}")
+    #files = s3_hook.list_keys(bucket_name='isd-weather')
     print("BUCKET:  {}".format(files))
 
     #objects = s3_client.list_objects_v2(Bucket="isd-weather")
