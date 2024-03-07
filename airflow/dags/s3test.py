@@ -1,8 +1,32 @@
 from airflow import DAG
-from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
 
+import os
+import logging
+from datetime import datetime, timedelta
+import concurrent.futures
+from modules.decorator import logger
 
+# Modules to interact with S3 bucket
+import boto3
+from botocore.config import Config
+from botocore.exceptions import ClientError
+from botocore.handlers import disable_signing
+
+def s3_upload():
+    session = boto3.Session(profile_name='aws_sedev1_df')
+    s3_client = session.client('s3',
+                    endpoint_url='https://10.0.1.42:9000',
+                    verify=False)
+    #This example uses the boto3 client
+    #Client Example
+
+    objects = s3_client.list_objects_v2(Bucket="isd-weather")
+
+    for obj in objects['Contents']:
+        print(obj['Key'], obj['Size'], obj['LastModified'])
+    
 
 with DAG(
     dag_id='s3cli_test_dag',
@@ -10,10 +34,9 @@ with DAG(
     schedule_interval="@daily"
 ) as dag:
 
-
-    bash_hello = BashOperator(
-        task_id='print_hello_world',
-        bash_command='aws --endpoint-url https://10.0.1.42:9000 --no-verify-ssl s3 ls isd-weather --profile aws_sedev1_df --human-readable'
+    python_upload = PythonOperator(
+        task_id='start',
+        python_callable=s3_upload
     )
 
-bash_hello
+python_upload
