@@ -116,15 +116,16 @@ def _download_file(object_key, bucket = PUBLIC_BUCKET):
     """ 
     
     # Set directory and local name of file to be downloaded    
-    logging.info("Download starting %s", object_key.key)
-    year, local_name = object_key.split("/")[2:]
-    logging.info("Year %s local_name %s", year, local_name)
+    #logging.info("Download starting %s", object_key.key)
+    #year, local_name = object_key.split("/")[2:]
+    year, local_name = object_key.split("/")
+    #logging.info("Year %s local_name %s", year, local_name)
     directory = f"/mnt/shared/weather/data/raw/{year}"
     filename = f"{directory}/{local_name}"
 
     # Download s3 object 
     try:
-        logging.info("Download starting")
+        #logging.info("Download starting")
         bucket.download_file(object_key, filename)
     except ClientError as ce:
         logging.error("ERROR: %s", ce)
