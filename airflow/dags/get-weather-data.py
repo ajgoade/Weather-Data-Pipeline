@@ -72,7 +72,7 @@ with local_workflow:
 
         # Change all double quotes to single quotes
     task2 = BashOperator(
-        task_id = "ExtractArchive",   
+        task_id = "ChangeQuotes",   
         do_xcom_push = False,     
         bash_command = f"""
         sed -i 's/"/\'/g' /mnt/shared/weather/data/raw/2024/*
