@@ -31,7 +31,7 @@ def s3_download():
         s3_hook.download_file(
             key=file,
             bucket_name=('speed-download'),
-            local_path=string+file
+            local_path=string
         )
 
 def s3_upload():
