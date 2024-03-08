@@ -75,7 +75,7 @@ with local_workflow:
         task_id = "ExtractArchive",   
         do_xcom_push = False,     
         bash_command = f"""
-        sed -i "s/\"/'/g" /mnt/shared/weather/data/raw/2024/*
+        sed -i 's/"/\'/g' /mnt/shared/weather/data/raw/2024/*
         """
     )
 
