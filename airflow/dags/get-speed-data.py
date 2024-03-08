@@ -11,6 +11,7 @@ import logging
 from datetime import timedelta, datetime
 import glob
 import os
+import shutil
 
 # Global variables
 YEAR = datetime.now().strftime("%Y")
@@ -18,7 +19,8 @@ TODAY = datetime.now().strftime("%Y-%m-%d")
 RAW_FILES_DIRECTORY = f"/mnt/shared/speed"
 
 def s3_download():
-        # Folder to save the raw files. Create it if it does not exist        
+        # Folder to save the raw files. Create it if it does not exist    
+    shutil.rmtree(f"{RAW_FILES_DIRECTORY}")    
     if not os.path.exists(f"{RAW_FILES_DIRECTORY}"):
         os.makedirs(f"{RAW_FILES_DIRECTORY}")    
 
@@ -45,7 +47,7 @@ def s3_upload():
     for file in new_files:
         s3_hook.load_file(
             filename=file,
-            key='speed/'+file,
+            key='speed/'.join(file.split('/')[-2:]),
             bucket_name='speed-upload',
             replace=True
         )
