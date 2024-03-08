@@ -69,10 +69,20 @@ with local_workflow:
         task_id = "DownloadData",
         python_callable = download_task
     )
-    task2 = PythonOperator(
+
+        # Change all double quotes to single quotes
+    task2 = BashOperator(
+        task_id = "ExtractArchive",   
+        do_xcom_push = False,     
+        bash_command = f"""
+        sed -i "s/\"/'/g" /mnt/shared/weather/data/raw/2024/*
+        """
+    )
+
+    task3 = PythonOperator(
         task_id='UploadData',
         python_callable=s3_upload
     )
 
 
-    task1 >> task2
+    task1 >> task2 >> task3
