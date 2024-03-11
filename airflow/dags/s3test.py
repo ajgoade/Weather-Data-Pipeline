@@ -27,6 +27,7 @@ def s3_upload():
     string = f"{RAW_FILES_DIRECTORY}/"
     new_files = [string + x for x in files]
     for file in new_files:
+        print(file)
         s3_hook.load_file(
             filename=file,
             key='speed/'.join(file.split('/')[-2:]),
