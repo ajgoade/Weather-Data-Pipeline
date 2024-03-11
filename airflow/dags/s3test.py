@@ -21,7 +21,8 @@ CLEAN_CSV_DIRECTORY = f"/mnt/shared/weather/data/clean"
 RAW_FILES_DIRECTORY = f"/mnt/shared/speed"
 
 def s3_upload():
-    s3_hook = S3Hook(aws_conn_id='aws_sedev1_df')
+    print("THIS SHOULD CAUSE AN ERROR")
+    s3_hook = S3Hook(aws_conn_id='NONE')
     s3_hook.get_conn()
     files = os.listdir(f"{RAW_FILES_DIRECTORY}")
     string = f"{RAW_FILES_DIRECTORY}/"
