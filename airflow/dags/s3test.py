@@ -18,24 +18,19 @@ from botocore.handlers import disable_signing
 YEAR = datetime.now().strftime("%Y")
 TODAY = datetime.now().strftime("%Y-%m-%d")
 CLEAN_CSV_DIRECTORY = f"/mnt/shared/weather/data/clean" 
-RAW_FILES_DIRECTORY = f"/mnt/shared/weather/data/raw"
+RAW_FILES_DIRECTORY = f"/mnt/shared/speed"
 
 def s3_upload():
     s3_hook = S3Hook(aws_conn_id='aws_sedev1_df')
     s3_hook.get_conn()
-    #s3_client = s3_conn.client('s3')
-    #This example uses the boto3 client
-    #Client Example
-    files = os.listdir(f"{RAW_FILES_DIRECTORY}/{YEAR}")
-    string = f"{RAW_FILES_DIRECTORY}/{YEAR}/"
+    files = os.listdir(f"{RAW_FILES_DIRECTORY}")
+    string = f"{RAW_FILES_DIRECTORY}/"
     new_files = [string + x for x in files]
-    #files = s3_hook.list_keys(bucket_name='isd-weather')
-    #print("BUCKET:  {}".format(new_files))
     for file in new_files:
         s3_hook.load_file(
             filename=file,
-            key='/'.join(file.split('/')[-2:]),
-            bucket='isd-weather',
+            key='speed/'.join(file.split('/')[-2:]),
+            bucket_name='speed-upload',
             replace=True
         )
 
