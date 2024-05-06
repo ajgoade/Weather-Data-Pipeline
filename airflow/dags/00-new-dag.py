@@ -56,7 +56,7 @@ def s3_upload():
 
 # DAG configuration
 local_workflow = DAG(
-    "NewDAG",
+    "NewNamefortheNewDAG",
     schedule_interval="1 0 * * *", # Run at 00:01 Everyday
     start_date = days_ago(1),    
     dagrun_timeout=timedelta(minutes=60),
