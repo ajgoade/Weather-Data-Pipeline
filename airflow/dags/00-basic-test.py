@@ -82,19 +82,22 @@ local_workflow = DAG(
 
 with local_workflow:  
     # Download the objects from the S3 Bucket
-    task1 = PythonOperator(
+    task1 = BashOperator(
         task_id = "ExtractData",
-        python_callable=extract
+        bash_command='echo "ls -ltr /"'
+        #python_callable=extract
     )
     
-    task2 = PythonOperator(
+    task2 = BashOperator(
         task_id = "TransformData",
-        python_callable=transform
+        bash_command = 'ls -ltr /mounts'
+        #python_callable=transform
     )
 
-    task3 = PythonOperator(
+    task3 = BashOperator(
         task_id='LoadData',
-        python_callable=load
+        bash_command = 'pip list'
+        #python_callable=load
     )
 
 
