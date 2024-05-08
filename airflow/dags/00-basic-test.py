@@ -90,7 +90,7 @@ with local_workflow:
     
     task2 = BashOperator(
         task_id = "TransformData",
-        bash_command = 'ls -ltr /mounts'
+        bash_command = 'ls -ltr /mnt'
         #python_callable=transform
     )
 
