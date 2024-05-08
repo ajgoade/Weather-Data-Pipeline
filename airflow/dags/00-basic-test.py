@@ -84,7 +84,7 @@ with local_workflow:
     # Download the objects from the S3 Bucket
     task1 = BashOperator(
         task_id = "ExtractData",
-        bash_command="ls -ltr /mnt/shared"
+        bash_command="ls -ltr /mnt/shared/retail-data/raw-data"
         #python_callable=extract
     )
     
