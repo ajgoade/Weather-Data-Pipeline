@@ -101,7 +101,7 @@ with local_workflow:
     )
     
     task4 = BashOperator(
-        task_id='LoadData',
+        task_id='UploadData',
         bash_command = 'pip list | grep pandas'
         #python_callable=load
     )
