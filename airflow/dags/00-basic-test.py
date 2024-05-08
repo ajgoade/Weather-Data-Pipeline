@@ -99,6 +99,12 @@ with local_workflow:
         bash_command = 'ls -ltr /mnt/datasources'
         #python_callable=load
     )
+    
+    task4 = BashOperator(
+        task_id='LoadData',
+        bash_command = 'pip list | grep pandas'
+        #python_callable=load
+    )
 
 
-    task1 >> task2 >> task3
+    task1 >> task2 >> task3 >> task4
