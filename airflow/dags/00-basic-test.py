@@ -96,7 +96,7 @@ with local_workflow:
 
     task3 = BashOperator(
         task_id='LoadData',
-        bash_command = 'ls -ltr /mnt/datasources'
+        bash_command = 'ls -ltr /mnt/user/ezua-tutorials/images'
         #python_callable=load
     )
     
